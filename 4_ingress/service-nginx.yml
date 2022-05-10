@@ -4,11 +4,11 @@ kind: Service
 metadata:
   name: nginx-articles
   labels:
-    app: mysql
+    app: article
 spec:
   ports:
   - port: 80
     name: nginx
   clusterIP: None
   selector:
-    app: mysql
+    app: article
