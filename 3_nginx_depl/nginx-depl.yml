@@ -1,0 +1,53 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-articles
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+        - name: nginx
+          image: nginx
+          ports:
+          - containerPort: 80
+          volumeMounts:
+          - mountPath: /usr/share/nginx/html
+            name: volume-nginx
+        - name: get-article
+          image: get_article
+          imagePullPolicy: Never
+          env:
+          - name: DBHOST
+            valueFrom:
+              configMapKeyRef:
+                name: nginx-config
+                key: dbhost
+          - name: DBUSER
+            valueFrom:
+              secretKeyRef:
+                name: mysqlsecret
+                key: username
+          - name: DBPASS
+            valueFrom:
+              secretKeyRef:
+                name: mysqlsecret
+                key: password
+          - name: DBNAME
+            valueFrom:
+              configMapKeyRef:
+                name: nginx-config
+                key: dbname
+          volumeMounts:
+          - mountPath: /usr/share/nginx/html
+            name: volume-nginx
+      volumes:
+      - name: volume-nginx
+        emptyDir: {}
