@@ -5,5 +5,4 @@ metadata:
   name: nginx-config
   namespace: hometask
 data:
-  dbhost: mysql
-  dbname: hometask
+  dbhost: mysql-service

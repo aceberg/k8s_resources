@@ -8,10 +8,12 @@ import os
 htmlpage = "<html><head><title>%s</title></head><body>%s</body></html>"
 nginxpath = "/usr/share/nginx/html/"
 
+# Create path if not exists
 isExist = os.path.exists(nginxpath)
 if not isExist:
   os.makedirs(nginxpath)
 
+# Connect to DB
 mydb = mysql.connector.connect(
   host=os.environ['DBHOST'],
   user=os.environ['DBUSER'],
@@ -34,7 +36,7 @@ while True:
   f.close()
 
   time.sleep(120)
-  print("Title =", atitle)
+  # print("Title =", atitle)
 
 mydb.close()
 

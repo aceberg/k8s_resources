@@ -7,14 +7,13 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: mysql
+      app: article
   serviceName: "mysql"
   replicas: 1
-  minReadySeconds: 10 
   template:
     metadata:
       labels:
-        app: mysql  
+        app: article  
     spec:
       terminationGracePeriodSeconds: 10
       containers:
@@ -29,6 +28,21 @@ spec:
             secretKeyRef:
               name: mysqlsecret
               key: password
+        - name: MYSQL_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: mysqlsecret
+              key: dbname
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: mysqlsecret
+              key: dbuser
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysqlsecret
+              key: dbpass
         volumeMounts:
         - name: mysql-vol
           mountPath: /var/lib/mysql
